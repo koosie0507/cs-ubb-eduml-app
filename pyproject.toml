@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mlops-test-app"
+version = "0.1.0"
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python"
+]
+description = "test out various ways to run workloads on the eduml-ubb cluster"
+license = { file = "LICENSE" }
+authors = [
+  {name = "Andrei Olar", email = "andrei.olar@ubbcluj.ro"}
+]
+maintainers = [
+  {name = "Andrei Olar", email = "andrei.olar@ubbcluj.ro"}
+]
+
+requires-python = ">= 3.11"
+dependencies = [
+    "mlflow",
+    "torch",
+    "torchvision"
+]
