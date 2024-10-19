@@ -1,10 +1,10 @@
-name: scikit-learn-wine-quality-prediction
+name: cs-ubb-mlops-test
 docker_env:
-  image:  scikit-learn-wine-quality-prediction
+  image:  cs-ubb-mlops-test
 
 entry_points:
   main:
     parameters:
       alpha: float
       l1_ratio: {type: float, default: 0.1}
-    command: "python train.py --alpha {alpha} --l1-ratio {l1_ratio}"
+    command: "python -m cs_ubb_mlops_test --alpha {alpha} --l1-ratio {l1_ratio}"

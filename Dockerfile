@@ -1,6 +1,10 @@
 FROM python:3.12
 
-RUN pip install polars numpy scipy scikit-learn mlflow
+WORKDIR /model
 
-COPY wine-quality.csv .
-COPY train.py .
+ENV PYTHONPATH="$PYTHONPATH:/model/src"
+COPY pyproject.toml .
+RUN pip install .
+
+COPY src src/
+COPY data data/
