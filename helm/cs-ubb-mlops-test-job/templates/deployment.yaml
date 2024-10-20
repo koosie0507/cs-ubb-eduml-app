@@ -19,7 +19,13 @@ spec:
       containers:
         - name: {{ include "cs-ubb-mlops-test-job.name" . }}
           image: {{ include "image.uri" . }}
-          command: ["python", "-m", "cs_ubb_mlops_test"]
+          command: "python"
+          args:
+            - "-m"
+            - "cs_ubb_mlops_test"
+            {{- range .Values.parameters }}
+            - "-P {{ .name }}={{ .value }}"
+            {{- end }}
           resources:
             requests:
               cpu: 100m
