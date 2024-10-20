@@ -25,9 +25,14 @@ jobs:
       - name: set up vars from Git
         id: vars
         run: |
+          BRANCH_NAME=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}
+          TAG_NAME=${GITHUB_REF#refs/tags} # Strip refs/tags/ for tag name
+          if [ "${GITHUB_REF_TYPE}" = "branch" ]; then
+            echo "IMAGE_TAG=$BRANCH_NAME" >> $GITHUB_ENV
+          elif [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            echo "IMAGE_TAG=$TAG_NAME" >> $GITHUB_ENV
+          fi
           echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
-          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - name: ghcr.io login
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -46,6 +51,6 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_NAME != '' && env.TAG_NAME || env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ env.COMMIT_SHA }}
             ${{ github.ref == 'refs/heads/main' && 'latest' || '' }}
           labels: ${{ steps.meta.outputs.labels }}
