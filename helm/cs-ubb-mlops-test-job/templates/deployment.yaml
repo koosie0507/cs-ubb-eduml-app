@@ -24,7 +24,7 @@ spec:
             - "-m"
             - "cs_ubb_mlops_test"
             {{- range .Values.parameters }}
-            - "-P {{ .name }}={{ .value }}"
+            - "--{{ .name | snake-case }}={{ .value }}"
             {{- end }}
           resources:
             requests:
