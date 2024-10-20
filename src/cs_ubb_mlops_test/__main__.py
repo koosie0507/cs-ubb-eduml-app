@@ -49,7 +49,8 @@ test_x = test.drop(["quality"], axis=1)
 train_y = train[["quality"]]
 test_y = test[["quality"]]
 mlflow.set_tracking_uri(uri=MLFLOW_TRACKING_URI)
-for idx, ialpha in enumerate(range(0.2, alpha, 0.1)):
+for idx, alpha_counter in enumerate(range(2, int(alpha*10))):
+    ialpha = alpha_counter / 10
     with mlflow.start_run(run_name=f"cs_ubb_mlops_test-{idx+1}") as run:
         mlflow.log_text(run.info.run_id, "start training", f"training-{idx+1}.log")
         lr = ElasticNet(alpha=ialpha, l1_ratio=l1_ratio, random_state=42)
@@ -60,7 +61,7 @@ for idx, ialpha in enumerate(range(0.2, alpha, 0.1)):
 
         (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
 
-        mlflow.log_param("alpha", alpha)
+        mlflow.log_param("alpha", ialpha)
         mlflow.log_param("l1_ratio", l1_ratio)
         mlflow.log_metric("rmse", rmse)
         mlflow.log_metric("r2", r2)
