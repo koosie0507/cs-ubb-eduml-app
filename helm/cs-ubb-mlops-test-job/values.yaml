@@ -8,3 +8,5 @@ image:
 parameters:
   - name: alpha
     value: 0.6
+  - name: l1Ratio
+    value: 0.1
