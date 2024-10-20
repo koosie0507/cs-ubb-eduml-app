@@ -3,7 +3,7 @@ mlflow:
 
 image:
   repository: ghcr.io/koosie0507/cs-ubb-ml-ops-test-1
-  tag: main-27488c4
+  tag: main-bc21e45
 
 parameters:
   - name: alpha
