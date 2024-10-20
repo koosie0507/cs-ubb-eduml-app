@@ -5,8 +5,6 @@ metadata:
   namespace: {{ .Values.mlflow.namespace | default "mlflow" }}
   labels:
     {{- include "cs-ubb-mlops-test-job.labels" . | nindent 4 }}
-  annotations:
-    argocd.argoproj.io/hook: Sync
 spec:
   ttlSecondsAfterFinished: 100
   backoffLimit: 0
