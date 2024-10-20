@@ -34,6 +34,9 @@ spec:
               cpu: 1
               nvidia.com/gpu: 1
               memory: 512Mi
+          env:
+            - name: MLFLOW_TRACKING_URI
+              value: {{ .Values.mlflow.trackingUri }}
       restartPolicy: Never
       nodeSelector:
         node-restriction.k8s.cs.ubbcluj.ro/reserved-for: machine-learning
