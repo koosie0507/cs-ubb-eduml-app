@@ -6,9 +6,6 @@ metadata:
   labels:
     {{- include "cs-ubb-mlops-test-job.labels" . | nindent 4 }}
 spec:
-  selector:
-    matchLabels:
-      {{- include "cs-ubb-mlops-test-job.selectorLabels" . | nindent 6 }}
   ttlSecondsAfterFinished: 100
   backoffLimit: 0
   template:
