@@ -19,7 +19,6 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ include "cs-ubb-mlops-test-job.serviceAccountName" . }}
       containers:
         - name: {{ include "cs-ubb-mlops-test-job.name" . }}
           image: {{ include "image.uri" . }}

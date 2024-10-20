@@ -51,18 +51,6 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
-Create the name of the service account to use
-*/}}
-{{- define "cs-ubb-mlops-test-job.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "cs-ubb-mlops-test-job.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
-
-
-{{/*
 Macros for determining the image uri
 */}}
 {{- define "image.repository" -}}
