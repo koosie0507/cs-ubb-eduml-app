@@ -1,13 +1,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "cs-ubb-mlops-test-job.fullname" . }}
+  generateName: "{{ include "cs-ubb-mlops-test-job.fullname" . }}-"
   namespace: {{ .Values.mlflow.namespace | default "mlflow" }}
   labels:
     {{- include "cs-ubb-mlops-test-job.labels" . | nindent 4 }}
-  annotations:
-    argocd.argoproj.io/hook: Sync
-    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
 spec:
   ttlSecondsAfterFinished: 100
   backoffLimit: 1
