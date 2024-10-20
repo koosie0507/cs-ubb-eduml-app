@@ -22,6 +22,7 @@ maintainers = [
 requires-python = ">= 3.11"
 dependencies = [
     "mlflow",
-    "torch",
-    "torchvision"
+    "sklearn",
+    "numpy",
+    "pandas"
 ]
