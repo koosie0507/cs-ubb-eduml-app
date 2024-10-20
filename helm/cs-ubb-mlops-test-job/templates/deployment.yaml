@@ -19,8 +19,8 @@ spec:
       containers:
         - name: {{ include "cs-ubb-mlops-test-job.name" . }}
           image: {{ include "image.uri" . }}
-          command: "python"
-          args:
+          command:
+            - "python"
             - "-m"
             - "cs_ubb_mlops_test"
             {{- range .Values.parameters }}
