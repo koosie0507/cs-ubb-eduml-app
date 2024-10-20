@@ -12,8 +12,6 @@ spec:
   backoffLimit: 0
   template:
     metadata:
-      annotations:
-        argocd.argoproj.io/hook: Skip
       labels:
         {{- include "cs-ubb-mlops-test-job.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
