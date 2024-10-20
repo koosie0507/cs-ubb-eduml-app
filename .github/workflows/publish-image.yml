@@ -1,6 +1,11 @@
 name: publish Docker image
 on:
   push:
+    paths-ignore:
+      - helm/**
+      - README.md
+      - LICENSE
+      - MLProject
     branches:
       - main
     tags:
@@ -46,7 +51,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
-            type=ref,event=branch,suffix={{sha}}
+            type=ref,event=branch,suffix=-{{sha}}
             type=semver,pattern={{version}}
       - name: build&push container image
         id: build_push
