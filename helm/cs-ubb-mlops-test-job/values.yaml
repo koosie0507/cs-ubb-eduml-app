@@ -1,0 +1,5 @@
+mlflow:
+  trackingUri: http://mlflow.mlflow.svc.cluster.local:5000/
+
+image:
+  repository: ghcr.io/koosie0507/cs-ubb-ml-ops-test-1

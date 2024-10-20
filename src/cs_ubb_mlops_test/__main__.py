@@ -46,7 +46,8 @@ test_y = test[["quality"]]
 alpha = float(args.alpha)
 l1_ratio = float(args.l1_ratio)
 
-with mlflow.start_run():
+mlflow.set_tracking_uri(uri="http://host.docker.internal:8080")
+with mlflow.start_run(run_name="cs_ubb_mlops_test"):
     lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
     lr.fit(train_x, train_y)
 

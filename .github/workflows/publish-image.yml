@@ -46,6 +46,6 @@ jobs:
           context: .
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_NAME != '' && steps.vars.outputs.TAG_NAME || steps.vars.outputs.BRANCH_NAME }}-${{ steps.vars.outputs.COMMIT_SHA }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.TAG_NAME != '' && env.TAG_NAME || env.BRANCH_NAME }}-${{ env.COMMIT_SHA }}
             ${{ github.ref == 'refs/heads/main' && 'latest' || '' }}
           labels: ${{ steps.meta.outputs.labels }}
