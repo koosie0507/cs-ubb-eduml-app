@@ -48,29 +48,22 @@ train_x = train.drop(["quality"], axis=1)
 test_x = test.drop(["quality"], axis=1)
 train_y = train[["quality"]]
 test_y = test[["quality"]]
-
-print("split train/test data")
-
-print("MLFlow tracking URI=", MLFLOW_TRACKING_URI)
 mlflow.set_tracking_uri(uri=MLFLOW_TRACKING_URI)
-print("start training")
-with mlflow.start_run(run_name="cs_ubb_mlops_test"):
-    lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
-    lr.fit(train_x, train_y)
+for idx, ialpha in enumerate(range(0.2, alpha, 0.1)):
+    with mlflow.start_run(run_name=f"cs_ubb_mlops_test-{idx+1}") as run:
+        mlflow.log_text(run.info.run_id, "start training", f"training-{idx+1}.log")
+        lr = ElasticNet(alpha=ialpha, l1_ratio=l1_ratio, random_state=42)
+        lr.fit(train_x, train_y)
+        mlflow.log_text(run.info.run_id, "done training", f"training-{idx+1}.log")
 
-    predicted_qualities = lr.predict(test_x)
+        predicted_qualities = lr.predict(test_x)
 
-    (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
+        (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
 
-    print(f"Elasticnet model (alpha={alpha:f}, l1_ratio={l1_ratio:f}):")
-    print(f"  RMSE: {rmse}")
-    print(f"  MAE: {mae}")
-    print(f"  R2: {r2}")
-
-    mlflow.log_param("alpha", alpha)
-    mlflow.log_param("l1_ratio", l1_ratio)
-    mlflow.log_metric("rmse", rmse)
-    mlflow.log_metric("r2", r2)
-    mlflow.log_metric("mae", mae)
-
-    mlflow.sklearn.log_model(lr, "model")
+        mlflow.log_param("alpha", alpha)
+        mlflow.log_param("l1_ratio", l1_ratio)
+        mlflow.log_metric("rmse", rmse)
+        mlflow.log_metric("r2", r2)
+        mlflow.log_metric("mae", mae)
+        mlflow.log_text(run.info.run_id, "done evaluation", f"training-{idx+1}.log")
+        mlflow.sklearn.log_model(lr, "model")
