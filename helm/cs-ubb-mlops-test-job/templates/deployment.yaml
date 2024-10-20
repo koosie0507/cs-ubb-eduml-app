@@ -24,7 +24,7 @@ spec:
             - "-m"
             - "cs_ubb_mlops_test"
             {{- range .Values.parameters }}
-            - "--{{ .name | snake-case }}={{ .value }}"
+            - "--{{ .name | kebabcase }}={{ .value }}"
             {{- end }}
           resources:
             requests:
