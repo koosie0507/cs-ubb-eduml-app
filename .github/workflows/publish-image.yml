@@ -52,5 +52,5 @@ jobs:
           push: true
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}-${{ env.COMMIT_SHA }}
-            ${{ github.ref == 'refs/heads/main' && 'latest' || '' }}
+            ${{ github.ref == 'refs/heads/main' && '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest' || '' }}
           labels: ${{ steps.meta.outputs.labels }}
