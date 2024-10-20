@@ -6,7 +6,6 @@ metadata:
   labels:
     {{- include "cs-ubb-mlops-test-job.labels" . | nindent 4 }}
   annotations:
-    argocd.argoproj.io/sync-options: Skip
     argocd.argoproj.io/hook: Sync
 spec:
   ttlSecondsAfterFinished: 100
