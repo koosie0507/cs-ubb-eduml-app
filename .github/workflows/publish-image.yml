@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - '**'
 
 env:
   REGISTRY: ghcr.io
@@ -20,6 +22,12 @@ jobs:
     steps:
       - name: source code checkout
         uses: actions/checkout@v4
+      - name: set up vars from Git
+        id: vars
+        run: |
+          echo "COMMIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "BRANCH_NAME=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
       - name: ghcr.io login
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -37,11 +45,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.vars.outputs.TAG_NAME != '' && steps.vars.outputs.TAG_NAME || steps.vars.outputs.BRANCH_NAME }}-${{ steps.vars.outputs.COMMIT_SHA }}
+            ${{ github.ref == 'refs/heads/main' && 'latest' || '' }}
           labels: ${{ steps.meta.outputs.labels }}
-      - name: generate artifact attestation
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-          subject-digest: ${{ steps.push.outputs.digest }}
-          push-to-registry: true
