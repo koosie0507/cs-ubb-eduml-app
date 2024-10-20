@@ -7,11 +7,14 @@ metadata:
     {{- include "cs-ubb-mlops-test-job.labels" . | nindent 4 }}
   annotations:
     argocd.argoproj.io/sync-options: Skip
+    argocd.argoproj.io/hook: Sync
 spec:
   ttlSecondsAfterFinished: 100
   backoffLimit: 0
   template:
     metadata:
+      annotations:
+        argocd.argoproj.io/hook: Skip
       labels:
         {{- include "cs-ubb-mlops-test-job.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
