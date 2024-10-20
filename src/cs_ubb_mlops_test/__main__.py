@@ -13,6 +13,9 @@ import mlflow
 import mlflow.sklearn
 
 
+MLFLOW_TRACKING_URI=os.getenv("MLFLOW_TRACKING_URI", "http://host.docker.internal:8080")
+
+
 def eval_metrics(actual, pred):
     rmse = np.sqrt(mean_squared_error(actual, pred))
     mae = mean_absolute_error(actual, pred)
@@ -27,8 +30,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--alpha")
 parser.add_argument("--l1-ratio")
 args = parser.parse_args()
+alpha = float(args.alpha)
+l1_ratio = float(args.l1_ratio)
 
-# Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
+print("parsed args alpha", alpha, "and l1 ratio", l1_ratio)
+
 root_dir = Path(__file__).parent.parent.parent
 data_dir = root_dir / "data"
 dataset_path = data_dir / "wine-quality.csv"
@@ -43,10 +49,11 @@ test_x = test.drop(["quality"], axis=1)
 train_y = train[["quality"]]
 test_y = test[["quality"]]
 
-alpha = float(args.alpha)
-l1_ratio = float(args.l1_ratio)
+print("split train/test data")
 
-mlflow.set_tracking_uri(uri="http://host.docker.internal:8080")
+print("MLFlow tracking URI=", MLFLOW_TRACKING_URI)
+mlflow.set_tracking_uri(uri=MLFLOW_TRACKING_URI)
+print("start training")
 with mlflow.start_run(run_name="cs_ubb_mlops_test"):
     lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
     lr.fit(train_x, train_y)
