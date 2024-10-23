@@ -3,7 +3,14 @@ mlflow:
 
 image:
   repository: ghcr.io/koosie0507/cs-ubb-ml-ops-test-1
-  tag: main-48f5d27
+  tag: main-332efd5
+
+minio:
+  enabled: true
+  credentials: minio-access
+  uri: https://minio.minio.svc.cluster.local:9000
+  bucket: test-bucket
+  path: cs-ubb-mlops-test-1/wine-quality.csv
 
 parameters:
   - name: alpha

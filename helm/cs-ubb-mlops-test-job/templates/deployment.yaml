@@ -35,8 +35,21 @@ spec:
               nvidia.com/gpu: 1
               memory: 512Mi
           env:
+            - name: MLFLOW_TRACKING_ENABLED
+              value: "true"
             - name: MLFLOW_TRACKING_URI
               value: {{ .Values.mlflow.trackingUri }}
+            {{- with .Values.minio }}
+            - name: MINIO_ENABLED
+              value: {{ .enabled }}
+            - name: MINIO_URI
+              value: {{ .uri }}
+            {{- end }}
+          {{- with .Values.minio }}
+          envFrom:
+            - secretRef:
+                name: {{ .credentials }}
+          {{- end }}
       restartPolicy: Never
       nodeSelector:
         node-restriction.k8s.cs.ubbcluj.ro/reserved-for: machine-learning
