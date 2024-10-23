@@ -38,12 +38,12 @@ spec:
             - name: MLFLOW_TRACKING_ENABLED
               value: "true"
             - name: MLFLOW_TRACKING_URI
-              value: {{ .Values.mlflow.trackingUri }}
+              value: {{ .Values.mlflow.trackingUri | quote }}
             {{- with .Values.minio }}
             - name: MINIO_ENABLED
-              value: {{ .enabled }}
+              value: {{ .enabled | quote }}
             - name: MINIO_URI
-              value: {{ .uri }}
+              value: {{ .uri | quote }}
             {{- end }}
           {{- with .Values.minio }}
           envFrom:
