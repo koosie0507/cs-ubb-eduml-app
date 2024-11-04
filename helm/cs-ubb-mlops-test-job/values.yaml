@@ -3,7 +3,7 @@ mlflow:
 
 image:
   repository: ghcr.io/koosie0507/cs-ubb-ml-ops-test-1
-  tag: main-332efd5
+  tag: main-58af7c2
 
 minio:
   enabled: true
