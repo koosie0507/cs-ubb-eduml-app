@@ -31,8 +31,8 @@ spec:
               cpu: 100m
               memory: 256Mi
             limits:
-              cpu: 1
-              nvidia.com/gpu: 1
+              cpu: 1000m
+              nvidia.com/gpu: "1"
               memory: 512Mi
           env:
             - name: MLFLOW_TRACKING_ENABLED
