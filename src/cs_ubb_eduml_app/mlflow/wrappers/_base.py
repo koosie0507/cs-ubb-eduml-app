@@ -77,7 +77,7 @@ class mlflow_decorator(metaclass=ABCMeta):
                 mlflow.log_params(model_params)
 
                 result = wrapped(*args, **kwargs)
-                data_in, model, model_out, metrics = self._process_wrapped_func_result(result)
+                data_in, model_out, model, metrics = self._process_wrapped_func_result(result)
 
                 if self.__IMPORT_SUCCESS:
                     self._log_model(model, infer_signature(data_in, model_out, model_params))
