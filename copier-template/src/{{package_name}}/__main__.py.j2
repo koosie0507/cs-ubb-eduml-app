@@ -87,6 +87,4 @@ if __name__ == "__main__":
     l1_ratio = float(args.l1_ratio)
     print("parsed args alpha", alpha, "and l1 ratio", l1_ratio)
 
-    for idx, alpha_counter in enumerate(range(2, int(alpha*10))):
-        ialpha = alpha_counter / 10
-        fit_predict_wine_quality(ialpha, l1_ratio)
+    fit_predict_wine_quality(alpha, l1_ratio)
