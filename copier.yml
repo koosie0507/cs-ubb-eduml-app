@@ -1,0 +1,41 @@
+_subdirectory: copier-template
+_templates_suffix: "j2"
+
+project_name:
+  type: str
+  help: "Enter the project name (e.g., My Project)"
+
+project_slug:
+  type: str
+  help: "Enter the package name in kebab-case (e.g., my-project)"
+  default: "{{ project_name | lower | replace(' ', '-') | replace('_', '-') }}"
+
+package_name:
+  type: str
+  help: "Enter the package slug in snake_case (e.g., my_project)"
+  default: "{{ project_slug | replace('-', '_') }}"
+
+experiment_name:
+  type: str
+  help: "Enter the experiment name (e.g., my-project-experiment)"
+  default: "{{ project_slug }}-experiment"
+
+author_name:
+  type: str
+  help: "Your name (e.g. Jane Smith)"
+  default: "First Last"
+
+author_email:
+  type: str
+  help: "Your email (e.g. jane.smith@example.com)"
+  default: first.last@example.com
+
+github_namespace:
+  type: str
+  help: "GitHub organization or user name"
+  default: "firstlast"
+
+github_repo:
+  type: str
+  help: "GitHub repository name"
+  default: "{{project_slug}}"

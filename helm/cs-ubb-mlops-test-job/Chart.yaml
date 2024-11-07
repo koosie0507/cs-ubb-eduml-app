@@ -1,6 +1,0 @@
-apiVersion: v2
-name: cs-ubb-mlops-test-job
-description: A Helm chart for a job that runs training using mlflow
-
-type: application
-version: 0.1.0

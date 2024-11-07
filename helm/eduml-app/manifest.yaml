@@ -1,0 +1,49 @@
+---
+# Source: eduml-app/templates/deployment.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: "eduml-app-"
+  namespace: "mlflow"
+  labels:
+    helm.sh/chart: eduml-app-0.1.0
+    app.kubernetes.io/name: eduml-app
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "0.1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 1
+  template:
+    metadata:
+      labels:
+        helm.sh/chart: eduml-app-0.1.0
+        app.kubernetes.io/name: eduml-app
+        app.kubernetes.io/instance: release-name
+        app.kubernetes.io/version: "0.1.0"
+        app.kubernetes.io/managed-by: Helm
+    spec:
+      containers:
+        - name: eduml-app
+          image: ghcr.io/koosie0507/cs-ubb-eduml-app:main-f488fdb
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 1000m
+              nvidia.com/gpu: "1"
+              memory: 512Mi
+          env:
+            - name: MLFLOW_TRACKING_ENABLED
+              value: "true"
+            - name: MLFLOW_EXPERIMENT_NAME
+              value: "eduml-app-experiment"
+      restartPolicy: Never
+      nodeSelector:
+        node-restriction.k8s.cs.ubbcluj.ro/reserved-for: machine-learning
+      tolerations:
+        - key: "node-restriction.k8s.cs.ubbcluj.ro/reserved-for"
+          operator: "Equal"
+          value: "machine-learning"
+          effect: "NoSchedule"

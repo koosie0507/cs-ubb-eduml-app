@@ -6,12 +6,12 @@ import mlflow.pytorch
 import mlflow.tensorflow
 import mlflow.keras
 
-from mlflow.entities import RunStatus
 from mlflow.models import infer_signature, ModelSignature
 
 
 class sklearn_model:
     __MODEL_PATH = "sklearn-model"
+
     def __init__(self, enabled: bool, tracking_uri: str, experiment: Optional[str] = None) -> None:
         if enabled:
             mlflow.set_tracking_uri(tracking_uri)

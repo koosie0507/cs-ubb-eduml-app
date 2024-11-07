@@ -1,0 +1,8 @@
+apiVersion: v2
+# change this default name to match your app
+name: eduml-app
+description: A Helm chart for scheduling a Kubernetes Job for ML model training
+
+type: application
+version: 0.1.0
+appVersion: 0.1.0
