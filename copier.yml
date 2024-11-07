@@ -1,5 +1,9 @@
 _subdirectory: copier-template
 _templates_suffix: "j2"
+_skip_if_exists:
+  - README.md
+  - .gitignore
+  - LICENSE
 
 project_name:
   type: str

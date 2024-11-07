@@ -1,10 +1,8 @@
 import argparse
 import io
-import os
 import warnings
 from pathlib import Path
 
-import dotenv
 import numpy as np
 import pandas as pd
 from minio import Minio
@@ -14,57 +12,50 @@ from sklearn.model_selection import train_test_split
 
 import mlflow.sklearn
 
-from cs_ubb_mlops_test.mlflow.wrappers import sklearn_model
+from cs_ubb_eduml_app.config import Settings
+from cs_ubb_eduml_app.mlflow.wrappers import sklearn_model
 
-dotenv.load_dotenv()
+settings = Settings.from_env()
 warnings.filterwarnings("ignore")
 np.random.seed(40)
 
 
-MLFLOW_TRACKING_ENABLED = os.getenv("MLFLOW_TRACKING_ENABLED", "") in {
-    "t", "true", "1", "yes", "y"
-}
-MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI")
-MINIO_ENABLED = os.getenv("MINIO_ENABLED", "") in {
-    "t", "true", "1", "yes", "y"
-}
 ROOT_DIR = Path(__file__).parent.parent.parent
-TRAINING_DATA_PATH = (
-    os.getenv("MINIO_OBJECT_PATH", "cs-ubb-mlops-test-1/wine-quality.csv")
-    if MINIO_ENABLED
-    else ROOT_DIR / "data" / "wine-quality.csv"
-)
-
-MINIO_URI = os.getenv("MINIO_URI", "https://minio.minio.svc.cluster.local:9000")
-MINIO_BUCKET = os.getenv("MINIO_BUCKET", "test-bucket")
-MINIO_USERNAME = os.getenv("MINIO_USERNAME")
-MINIO_PASSWORD = os.getenv("MINIO_PASSWORD")
 
 
 def load_data() -> pd.DataFrame:
-    if MINIO_ENABLED:
-        minio = Minio(MINIO_URI, access_key=MINIO_USERNAME, secret_key=MINIO_PASSWORD, secure=False)
-        response = minio.get_object(MINIO_BUCKET, TRAINING_DATA_PATH)
+    if settings.minio.enabled:
+        minio = Minio(
+            settings.minio.uri,
+            access_key=settings.minio.user,
+            secret_key=settings.minio.password,
+            secure=False
+        )
+        response = minio.get_object(settings.minio.bucket, settings.minio.path)
         try:
             return pd.read_csv(io.StringIO(response.data.decode()))
         finally:
             response.close()
             response.release_conn()
     else:
-        local_path = ROOT_DIR / TRAINING_DATA_PATH
+        local_path = ROOT_DIR / "data" / "dataset.csv"
         with open(local_path, "r"):
             result = pd.read_csv(local_path)
         return result
 
 
-def eval_metrics(actual, pred):
+def eval_metrics(actual, pred) -> dict:
     rmse = np.sqrt(mean_squared_error(actual, pred))
     mae = mean_absolute_error(actual, pred)
     r2 = r2_score(actual, pred)
-    return rmse, mae, r2
+    return {
+        "rmse": rmse,
+        "r2": r2,
+        "mae": mae,
+    }
 
 
-@sklearn_model(MLFLOW_TRACKING_ENABLED, MLFLOW_TRACKING_URI, "test-experiment-1")
+@sklearn_model(settings.mlflow.enabled, settings.mlflow.tracking_uri, settings.mlflow.experiment_name)
 def fit_predict_wine_quality(a: float, l1: float):
     wine_quality_df = load_data()
     train, test = train_test_split(wine_quality_df)
@@ -78,11 +69,12 @@ def fit_predict_wine_quality(a: float, l1: float):
     lr.fit(train_x, train_y)
 
     predicted_qualities = lr.predict(test_x)
-    (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
-    mlflow.log_metric("rmse", rmse)
-    mlflow.log_metric("r2", r2)
-    mlflow.log_metric("mae", mae)
-    return test_x, predicted_qualities, lr
+    return (
+        test_x,
+        predicted_qualities,
+        lr,
+        eval_metrics(test_y, predicted_qualities),
+    )
 
 
 # Split the data into training and test sets. (0.75, 0.25) split.
