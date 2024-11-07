@@ -21,9 +21,9 @@ $ pipx install copier
 Run Copier using the HTTP link to this repository.
 
 ```shell
-$ cd dir/where/you/want/to/create/your/ml/training/job
-$ copier https://github.com/koosie0507/cs-ubb-eduml-app.git
+$ copier copy https://github.com/koosie0507/cs-ubb-eduml-app.git path/to/local/dir
 ```
 
-Once the project code is generated, follow the instructions in its `README.md`
-file.
+Once the project code is generated, follow the instructions in the `README.md`
+file located in the project code directory to set up your ML training job on
+EduML.
