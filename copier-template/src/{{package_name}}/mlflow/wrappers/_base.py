@@ -55,9 +55,8 @@ class mlflow_decorator(metaclass=ABCMeta):
         if not isinstance(result, tuple):
             raise TypeError("model training function did not return tuple")
         if len(result) != 3:
-            raise ValueError("expected training to return tuple with 3 values")
-        data_in, model_out, model = result
-        return data_in, model, model_out
+            raise ValueError("expected training to return tuple with 4 values")
+        return result
 
     def __call__(self, wrapped: Callable[..., ModelSignature]) -> Callable:
         @functools.wraps(wrapped)
@@ -69,7 +68,7 @@ class mlflow_decorator(metaclass=ABCMeta):
                 if experiment_id:
                     run_args["experiment_id"] = experiment_id
 
-                mlflow.start_run(**run_args)
+                run = mlflow.start_run(**run_args)
                 model_params = {
                     f"param_{idx+1}": arg
                     for idx, arg in enumerate(args)
@@ -78,11 +77,11 @@ class mlflow_decorator(metaclass=ABCMeta):
                 mlflow.log_params(model_params)
 
                 result = wrapped(*args, **kwargs)
-                data_in, model, model_out = self._process_wrapped_func_result(result)
+                data_in, model, model_out, metrics = self._process_wrapped_func_result(result)
 
                 if self.__IMPORT_SUCCESS:
                     self._log_model(model, infer_signature(data_in, model_out, model_params))
-
+                mlflow.log_metrics(metrics, run_id=run.info.run_id)
                 return result
             except Exception as exc:
                 run_finish_status = "FAILED"
