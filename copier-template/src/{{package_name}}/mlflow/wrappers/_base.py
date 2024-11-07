@@ -54,7 +54,7 @@ class mlflow_decorator(metaclass=ABCMeta):
             raise TypeError("model training function returned NoneType")
         if not isinstance(result, tuple):
             raise TypeError("model training function did not return tuple")
-        if len(result) != 3:
+        if len(result) != 4:
             raise ValueError("expected training to return tuple with 4 values")
         return result
 
