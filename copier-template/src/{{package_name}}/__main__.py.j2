@@ -1,10 +1,8 @@
 import argparse
 import io
-import os
 import warnings
 from pathlib import Path
 
-import dotenv
 import numpy as np
 import pandas as pd
 from minio import Minio
@@ -15,7 +13,7 @@ from sklearn.model_selection import train_test_split
 import mlflow.sklearn
 
 from {{package_name}}.config import Settings
-from {{package_name}}.mlflow import sklearn_model
+from {{package_name}}.mlflow.wrappers import sklearn_model
 
 settings = Settings.from_env()
 warnings.filterwarnings("ignore")
@@ -46,11 +44,15 @@ def load_data() -> pd.DataFrame:
         return result
 
 
-def eval_metrics(actual, pred):
+def eval_metrics(actual, pred) -> dict:
     rmse = np.sqrt(mean_squared_error(actual, pred))
     mae = mean_absolute_error(actual, pred)
     r2 = r2_score(actual, pred)
-    return rmse, mae, r2
+    return {
+        "rmse": rmse,
+        "r2": r2,
+        "mae": mae,
+    }
 
 
 @sklearn_model(settings.mlflow.enabled, settings.mlflow.tracking_uri, settings.mlflow.experiment_name)
@@ -67,11 +69,12 @@ def fit_predict_wine_quality(a: float, l1: float):
     lr.fit(train_x, train_y)
 
     predicted_qualities = lr.predict(test_x)
-    (rmse, mae, r2) = eval_metrics(test_y, predicted_qualities)
-    mlflow.log_metric("rmse", rmse)
-    mlflow.log_metric("r2", r2)
-    mlflow.log_metric("mae", mae)
-    return test_x, predicted_qualities, lr
+    return (
+        test_x,
+        predicted_qualities,
+        lr,
+        eval_metrics(test_y, predicted_qualities),
+    )
 
 
 # Split the data into training and test sets. (0.75, 0.25) split.
