@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 class MlflowSettings:
     enabled: bool = False
     tracking_uri: str = ""
+    experiment_name: str = "{{experiment_name}}"
 
 
 @dataclass
