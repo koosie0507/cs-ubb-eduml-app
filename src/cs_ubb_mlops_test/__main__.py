@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 
 import mlflow.sklearn
 
-from cs_ubb_mlops_test.mlflow import sklearn_model
+from cs_ubb_mlops_test.mlflow.wrappers import sklearn_model
 
 dotenv.load_dotenv()
 warnings.filterwarnings("ignore")
