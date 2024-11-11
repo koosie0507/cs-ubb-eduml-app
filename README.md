@@ -18,11 +18,19 @@ $ pipx install copier
 
 ## Usage
 
+Create a GitHub repository and clone it locally. Let's define:
+
+* `GITHUB_REPO`: name of the GitHub repository, _and_
+* `REPO_DIR`: the local directory where you cloned the repo.
+
 Run Copier using the HTTP link to this repository.
 
 ```shell
-$ copier copy https://github.com/koosie0507/cs-ubb-eduml-app.git path/to/local/dir
+$ copier copy https://github.com/koosie0507/cs-ubb-eduml-app.git `REPO_DIR`
 ```
+
+When prompted on the `github_repo` configuration value, use the `GITHUB_REPO`
+value.
 
 Once the project code is generated, follow the instructions in the `README.md`
 file located in the project code directory to set up your ML training job on
