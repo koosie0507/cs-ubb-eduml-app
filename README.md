@@ -26,11 +26,10 @@ Create a GitHub repository and clone it locally. Let's define:
 Run Copier using the HTTP link to this repository.
 
 ```shell
-$ copier copy https://github.com/koosie0507/cs-ubb-eduml-app.git `REPO_DIR`
+$ copier copy https://github.com/koosie0507/cs-ubb-eduml-app.git ${REPO_DIR}
 ```
 
-When prompted on the `github_repo` configuration value, use the `GITHUB_REPO`
-value.
+Use `${GITHUB_REPO}` to answer the `github_repo` copier prompt.
 
 Once the project code is generated, follow the instructions in the `README.md`
 file located in the project code directory to set up your ML training job on
