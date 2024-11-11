@@ -8,6 +8,8 @@ on:
       - MLProject
     branches:
       - main
+      - master
+      - trunk
     tags:
       - '**'
 
