@@ -45,20 +45,15 @@ Follow these steps to run the training job on the EduML cluster.
 1. confirm that there's a Docker image published in the GitHub Container
 Registry for your project. Using the default config, the image location is:
 `https://github.com/{{github_namespace}}/{{github_repo}}/pkgs/container/{{github_repo}}`
-1. make sure that the GitHub repo is registered with the EduML team:
-   * register a [personal access token](https://github.com/settings/tokens) that
-allows reading packages (the `read:packages` scope) and full control over the repo
-(the `repo` scope)
-   * send the token to the EduML team (e.g. via [OneTimeSecret](https://onetimesecret.com))
-   * wait for confirmation that the repository is registered
 1. confirm that `helm/{{ project_slug }}/values.yaml` matches your GitHub
 repository settings
 1. use the specific tag name marked as latest (e.g. `main-f488fdb`) in your
 `helm/{{ project_slug }}/values.yaml`
 1. commit and push the `values.yaml` file
-1. check out [Mlflow](https://mlflow.k8s.cs.ubbcluj.ro) or the
-[logs](https://grafana.k8s.cs.ubbcluj.ro/a/grafana-lokiexplore-app/explore?patterns=%5B%5D&var-primary_label=namespace%7C%3D~%7C.%2Amlflow.%2A)
-to verify that it worked.
+1. make sure that the GitHub repo is registered with the EduML team:
+   * wait for confirmation that the repository is registered
+1. inspect the [training job logs](https://grafana.k8s.cs.ubbcluj.ro/d/fe3q1y9rzuakgf/logs?from=now-1h&to=now&timezone=browser)
+1. check out [Mlflow](https://mlflow.k8s.cs.ubbcluj.ro)
 
 ### Updating the Training Job
 
