@@ -4,7 +4,7 @@ WORKDIR /model
 
 ENV PYTHONPATH="$PYTHONPATH:/model/src"
 COPY pyproject.toml .
-RUN pip install .
+RUN apt update -yqq && apt install git -y && pip install .
 
 COPY src src/
 COPY data data/
