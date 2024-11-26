@@ -13,7 +13,7 @@ class tf_model(mlflow_decorator):
 
     def _log_model(self, model: Any, sig: ModelSignature) -> None:
         mlflow.tensorflow.log_model(
-            model, self._model_path, **self._extra_log_model_args(sig)
+            model, f"{self._experiment}/{self._model_path}", **self._extra_log_model_args(sig)
         )
 
     @property
