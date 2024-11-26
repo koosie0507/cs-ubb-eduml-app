@@ -67,10 +67,6 @@ def fit_predict_wine_quality(a: float, l1: float):
 
     lr = ElasticNet(alpha=a, l1_ratio=l1, random_state=42)
     lr.fit(train_x, train_y)
-    with open("model.pkl", "wb") as f:
-        pickle.dump(lr, f)
-
-    mlflow.log_artifact("model.pkl", f"{settings.mlflow.experiment_name}/models/wine-quality-sklearn.pkl")
 
     predicted_qualities = lr.predict(test_x)
     return (
