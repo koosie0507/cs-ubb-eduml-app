@@ -1,4 +1,4 @@
-# EduML Cookiecutter Template
+# EduML Copier Template
 
 This is a [`copier`](https://copier.readthedocs.io) project template which sets
 up a Git repository for creating machine learning jobs for the EduML cluster
