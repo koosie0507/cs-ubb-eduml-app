@@ -23,11 +23,6 @@ spec:
             - "--{{ .name | kebabcase }}={{ .value }}"
             {{- end }}
           {{- end }}
-          {{- with .Values.storage }}
-            {{- if (and (eq .type "minio") .minio) }}
-            - --default-artifact-root=s3://mlflow-artifacts/
-            {{- end }}
-          {{- end }}
           resources:
             requests:
               cpu: 100m
@@ -52,8 +47,6 @@ spec:
             - name: MINIO_ENABLED
               value: {{ eq .type "minio" | quote }}
             {{- if (and (eq .type "minio") .minio) }}
-            - name: MLFLOW_S3_ENDPOINT_URL
-              value: {{ .minio.uri | default "minio.minio.svc.cluster.local:80" | quote }}
             - name: MINIO_URI
               value: {{ .minio.uri | default "minio.minio.svc.cluster.local:80" | quote }}
             - name: MINIO_BUCKET
