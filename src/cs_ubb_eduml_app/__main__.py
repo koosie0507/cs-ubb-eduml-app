@@ -10,8 +10,6 @@ from sklearn.linear_model import ElasticNet
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 
-import mlflow.sklearn
-
 from cs_ubb_eduml_app.config import Settings
 from cs_ubb_eduml_app.mlflow.wrappers import sklearn_model
 
