@@ -22,3 +22,7 @@ storage:
   minio:
     bucket: "test-bucket"
     path: "cs-ubb-mlops-test-1/wine-quality.csv"
+
+resources:
+  cpu: 1500m
+  memory: 2Gi
