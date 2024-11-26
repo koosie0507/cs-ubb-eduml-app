@@ -22,7 +22,11 @@ class mlflow_decorator(metaclass=ABCMeta):
         if enabled:
             mlflow.set_tracking_uri(tracking_uri)
         self._experiment = experiment
-        self._artifact_location = "s3://mlflow-artifacts/" if s3 else None
+        self._artifact_location = (
+            f"s3://mlflow-artifacts/{self._experiment}"
+            if s3 and experiment
+            else None
+        )
 
     def __ensure_experiment_id(self):
         if not self._experiment:
