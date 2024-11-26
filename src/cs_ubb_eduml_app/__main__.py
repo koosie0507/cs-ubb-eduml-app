@@ -1,12 +1,8 @@
 import argparse
 import io
-import logging
-import pickle
-import sys
 import warnings
 from pathlib import Path
 
-import mlflow
 import numpy as np
 import pandas as pd
 from minio import Minio
@@ -17,7 +13,6 @@ from sklearn.model_selection import train_test_split
 from cs_ubb_eduml_app.config import Settings
 from cs_ubb_eduml_app.mlflow.wrappers import sklearn_model
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 settings = Settings.from_env()
 warnings.filterwarnings("ignore")
 np.random.seed(40)
@@ -58,7 +53,7 @@ def eval_metrics(actual, pred) -> dict:
     }
 
 
-@sklearn_model(settings.mlflow.enabled, settings.mlflow.tracking_uri, settings.mlflow.experiment_name, settings.minio.enabled)
+@sklearn_model(settings.mlflow.enabled, settings.mlflow.tracking_uri, settings.mlflow.experiment_name)
 def fit_predict_wine_quality(a: float, l1: float):
     wine_quality_df = load_data()
     train, test = train_test_split(wine_quality_df)

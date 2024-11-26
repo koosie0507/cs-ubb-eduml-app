@@ -58,8 +58,6 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .minio.credentials | default "minio-access" | quote }}
-            - secretRef:
-                name: {{ .minio.artifactCredentials | default "minio-artifacts-access" | quote }}
             {{- end }}
           {{- end }}
       restartPolicy: Never
