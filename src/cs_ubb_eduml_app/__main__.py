@@ -55,7 +55,7 @@ def eval_metrics(actual, pred) -> dict:
     }
 
 
-@sklearn_model(settings.mlflow.enabled, settings.mlflow.tracking_uri, settings.mlflow.experiment_name, artifact_path="models")
+@sklearn_model(settings.mlflow.enabled, settings.mlflow.tracking_uri, settings.mlflow.experiment_name)
 def fit_predict_wine_quality(a: float, l1: float):
     wine_quality_df = load_data()
     train, test = train_test_split(wine_quality_df)
