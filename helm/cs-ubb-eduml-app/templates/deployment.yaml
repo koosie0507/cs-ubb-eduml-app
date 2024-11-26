@@ -50,7 +50,7 @@ spec:
             - name: MINIO_URI
               value: {{ .minio.uri | default "minio.minio.svc.cluster.local:80" | quote }}
             - name: MLFLOW_S3_ENDPOINT_URL
-              value: {{ .minio.uri | default "minio.minio.svc.cluster.local:80" | quote }}
+              value: "http://{{ .minio.uri | default "minio.minio.svc.cluster.local:80" }}"
             - name: MINIO_BUCKET
               value: {{ .minio.bucket | default "test-bucket" | quote }}
             - name: MINIO_OBJECT_PATH
