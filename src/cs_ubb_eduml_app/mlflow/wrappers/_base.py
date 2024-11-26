@@ -1,4 +1,5 @@
 import functools
+import logging
 import os
 from abc import ABCMeta, abstractmethod
 from typing import Callable, Any, Optional
@@ -27,13 +28,20 @@ class mlflow_decorator(metaclass=ABCMeta):
             if s3 and experiment
             else None
         )
+        self._log = logging.getLogger(self.__class__.__name__)
 
     def __ensure_experiment_id(self):
         if not self._experiment:
             return None
         exp = mlflow.get_experiment_by_name(self._experiment)
         if exp:
+            self._log.debug("using existing experiment %s with id %s", exp.name, exp.experiment_id)
             return exp.experiment_id
+        self._log.info(
+            "creating new experiment %s. store artifacts at %s",
+            self._experiment,
+            self._artifact_location or "default local path"
+        )
         return mlflow.create_experiment(self._experiment, self._artifact_location)
 
     @classmethod
