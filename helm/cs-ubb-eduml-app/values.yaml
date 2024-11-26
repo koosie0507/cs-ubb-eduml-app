@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/koosie0507/cs-ubb-eduml-app
-  tag: main-7802ec6
+  tag: main-f15908a
 
 # customize the name of the Mlflow experiment
 #experiment: cs-ubb-eduml-app-experiment
