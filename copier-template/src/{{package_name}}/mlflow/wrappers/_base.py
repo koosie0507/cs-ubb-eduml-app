@@ -15,10 +15,17 @@ class mlflow_decorator(metaclass=ABCMeta):
             cls.__IMPORT_SUCCESS = False
         return super().__new__(cls)
 
-    def __init__(self, enabled: bool, tracking_uri: str, experiment: Optional[str] = None) -> None:
+    def __init__(
+            self, enabled: bool, tracking_uri: str, experiment: Optional[str] = None, s3: Optional[bool] = False
+    ) -> None:
         if enabled:
             mlflow.set_tracking_uri(tracking_uri)
         self._experiment = experiment
+        self._artifact_location = (
+            f"s3://mlflow-artifacts/{self._experiment}"
+            if s3 and experiment
+            else None
+        )
 
     def __ensure_experiment_id(self):
         if not self._experiment:
@@ -26,7 +33,7 @@ class mlflow_decorator(metaclass=ABCMeta):
         exp = mlflow.get_experiment_by_name(self._experiment)
         if exp:
             return exp.experiment_id
-        return mlflow.create_experiment(self._experiment)
+        return mlflow.create_experiment(self._experiment, self._artifact_location)
 
     @classmethod
     @abstractmethod
