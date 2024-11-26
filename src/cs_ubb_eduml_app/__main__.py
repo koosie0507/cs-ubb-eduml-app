@@ -1,6 +1,8 @@
 import argparse
 import io
+import logging
 import pickle
+import sys
 import warnings
 from pathlib import Path
 
@@ -15,6 +17,7 @@ from sklearn.model_selection import train_test_split
 from cs_ubb_eduml_app.config import Settings
 from cs_ubb_eduml_app.mlflow.wrappers import sklearn_model
 
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 settings = Settings.from_env()
 warnings.filterwarnings("ignore")
 np.random.seed(40)
