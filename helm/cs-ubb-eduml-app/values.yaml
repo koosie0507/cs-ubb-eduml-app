@@ -22,5 +22,6 @@ storage:
   minio:
     uri: "minio.minio.svc.cluster.local:80"
     credentials: "minio-access"
+    artifactCredentials: "minio-artifacts-access"
     bucket: "test-bucket"
     path: "cs-ubb-mlops-test-1/wine-quality.csv"
